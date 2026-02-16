@@ -104,4 +104,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize app
   fetchActivities();
+    const participantsList = document.createElement('ul');
+    participantsList.className = 'participants-list';
+    document.body.appendChild(participantsList);
+	
+    // Hide bullet points
+    participantsList.style.listStyleType = 'none';
+    participantsList.style.paddingLeft = '0';
+	
+    function addParticipant(name) {
+        const li = document.createElement('li');
+        li.style.display = 'flex';
+        li.style.alignItems = 'center';
+	
+        const span = document.createElement('span');
+        span.textContent = name;
+        span.style.flexGrow = '1';
+	
+        const deleteBtn = document.createElement('button');
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.title = 'Unregister participant';
+        deleteBtn.style.marginLeft = '8px';
+        deleteBtn.style.background = 'none';
+        deleteBtn.style.border = 'none';
+        deleteBtn.style.cursor = 'pointer';
+        deleteBtn.style.fontSize = '1em';
+	
+        deleteBtn.addEventListener('click', function() {
+            participantsList.removeChild(li);
+        });
+	
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+        participantsList.appendChild(li);
+    }
 });
