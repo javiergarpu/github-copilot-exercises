@@ -20,11 +20,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        // Participants section
+        let participantsHTML = "";
+        if (details.participants.length > 0) {
+          participantsHTML = `
+            <div class="participants-section">
+              <strong>Participants:</strong>
+              <ul class="participants-list">
+                ${details.participants.map(email => `<li>${email}</li>`).join("")}
+              </ul>
+            </div>
+          `;
+        } else {
+          participantsHTML = `
+            <div class="participants-section">
+              <strong>Participants:</strong>
+              <em>No participants yet</em>
+            </div>
+          `;
+        }
+
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${participantsHTML}
         `;
 
         activitiesList.appendChild(activityCard);
@@ -83,4 +104,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize app
   fetchActivities();
+    const participantsList = document.createElement('ul');
+    participantsList.className = 'participants-list';
+    document.body.appendChild(participantsList);
+	
+    // Hide bullet points
+    participantsList.style.listStyleType = 'none';
+    participantsList.style.paddingLeft = '0';
+	
+    function addParticipant(name) {
+        const li = document.createElement('li');
+        li.style.display = 'flex';
+        li.style.alignItems = 'center';
+	
+        const span = document.createElement('span');
+        span.textContent = name;
+        span.style.flexGrow = '1';
+	
+        const deleteBtn = document.createElement('button');
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.title = 'Unregister participant';
+        deleteBtn.style.marginLeft = '8px';
+        deleteBtn.style.background = 'none';
+        deleteBtn.style.border = 'none';
+        deleteBtn.style.cursor = 'pointer';
+        deleteBtn.style.fontSize = '1em';
+	
+        deleteBtn.addEventListener('click', function() {
+            participantsList.removeChild(li);
+        });
+	
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+        participantsList.appendChild(li);
+    }
 });
